@@ -7,7 +7,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@simple-crud-server.tdeipi8.mongodb.net/?appName=simple-crud-server`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -24,8 +24,26 @@ async function run() {
     const db = client.db("AdoptiPaws-server");
     const listingsColl = db.collection("listings");
 
-    app.get("/listings", async (req, res) => {
+    app.get("/pets", async (req, res) => {
       const result = await listingsColl.find().toArray();
+
+      res.send(result);
+    });
+
+    app.get("/latest-pets", async (req, res) => {
+      const result = await listingsColl
+        .find()
+        .sort({ date: -1 })
+        .limit(6)
+        .toArray();
+
+      res.send(result);
+    });
+
+    app.get("/pets/:id", async (req, res) => {
+      const { id } = req.params;
+      const objectid = new ObjectId(id);
+      const result = await listingsColl.findOne({ _id: objectid });
 
       res.send(result);
     });
