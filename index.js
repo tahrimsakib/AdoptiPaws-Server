@@ -23,6 +23,7 @@ async function run() {
   try {
     const db = client.db("AdoptiPaws-server");
     const listingsColl = db.collection("listings");
+    const orderColl = db.collection("OrderColl");
 
     app.get("/pets", async (req, res) => {
       const result = await listingsColl.find().toArray();
@@ -53,6 +54,19 @@ async function run() {
       // console.log(data)
       const result = await listingsColl.insertOne(data);
       res.send(result);
+    });
+
+    app.get("/orders", async (req, res) => {
+      const result = await orderColl.find().toArray();
+
+      res.send(result);
+    });
+
+    app.post("/orders", async (req, res) => {
+      const data = req.body;
+      const result = await orderColl.insertOne(data);
+
+      res.send("heloo");
     });
 
     // Connect the client to the server	(optional starting in v4.7)
