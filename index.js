@@ -48,6 +48,13 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/pets", async (req, res) => {
+      const data = req.body;
+      // console.log(data)
+      const result = await listingsColl.insertOne(data);
+      res.send(result);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
