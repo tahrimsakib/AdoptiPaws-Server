@@ -66,7 +66,18 @@ async function run() {
       const data = req.body;
       const result = await orderColl.insertOne(data);
 
-      res.send("heloo");
+      res.send(result);
+    });
+
+    app.get("/orders", async (req, res) => {
+      const query = {};
+      if (query.email) {
+        query.buyer_email = email;
+      }
+
+      const result = await orderColl.find(query).toArray();
+
+      res.send(result);
     });
 
     // Connect the client to the server	(optional starting in v4.7)
