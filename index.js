@@ -77,9 +77,17 @@ async function run() {
       const email = req.query.email;
       const query = {};
       if (email) {
-        query.email = email; 
+        query.email = email;
       }
       const result = await listingsColl.find(query).toArray();
+      res.send(result);
+    });
+
+    app.delete("/pets/:id", async (req, res) => {
+      const { id } = req.params;
+      const objectid = new ObjectId(id);
+      const result = await listingsColl.deleteOne({ _id: objectid });
+
       res.send(result);
     });
 
