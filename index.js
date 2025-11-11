@@ -25,11 +25,11 @@ async function run() {
     const listingsColl = db.collection("listings");
     const orderColl = db.collection("OrderColl");
 
-    app.get("/pets", async (req, res) => {
-      const result = await listingsColl.find().toArray();
+    // app.get("/pets", async (req, res) => {
+    //   const result = await listingsColl.find().toArray();
 
-      res.send(result);
-    });
+    //   res.send(result);
+    // });
 
     app.get("/latest-pets", async (req, res) => {
       const result = await listingsColl
@@ -66,12 +66,20 @@ async function run() {
     app.get("/orders", async (req, res) => {
       const email = req.query.email;
       const query = {};
-
       if (email) {
         query.buyer_email = email;
       }
-
       const result = await orderColl.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/pets", async (req, res) => {
+      const email = req.query.email;
+      const query = {};
+      if (email) {
+        query.email = email; 
+      }
+      const result = await listingsColl.find(query).toArray();
       res.send(result);
     });
 
